@@ -2,7 +2,7 @@ package routes
 
 import (
 	"fmt"
-	"go-todo/db"
+	model "go-todo/models"
 	"html/template"
 	"log"
 	"net/http"
@@ -12,7 +12,7 @@ import (
 )
 
 func sendTodos(w http.ResponseWriter) {
-	todos, err := db.GetAllTodos()
+	todos, err := model.GetAllTodos()
 	if err != nil {
 		fmt.Errorf("Error:%s", &err)
 		return
@@ -29,7 +29,7 @@ func createTodo(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Printf("Error:%s", err)
 	}
-	err = db.CreateTodo(r.FormValue("todo"))
+	err = model.CreateTodo(r.FormValue("todo"))
 	if err != nil {
 		fmt.Printf("Error:%s", err)
 	}
@@ -37,7 +37,7 @@ func createTodo(w http.ResponseWriter, r *http.Request) {
 }
 
 func getTodos(w http.ResponseWriter, r *http.Request) {
-	todos, err := db.GetAllTodos()
+	todos, err := model.GetAllTodos()
 	if err != nil {
 		fmt.Printf("Error:%s", err)
 		return
@@ -55,7 +55,7 @@ func updateDone(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println("Could not parse id", err)
 	}
-	err = db.UpdateDone(id)
+	err = model.UpdateDone(id)
 	if err != nil {
 		fmt.Println("Could not update todo", err)
 	}
@@ -67,14 +67,14 @@ func deleteTodo(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println("C2ould not parse id", err)
 	}
-	err = db.Delete(id)
+	err = model.Delete(id)
 	if err != nil {
 		fmt.Println("Could not delete", err)
 	}
 	sendTodos(w)
 }
 
-func SetupAndRun() {
+func Run() {
 	mux := mux.NewRouter()
 	mux.HandleFunc("/", getTodos)
 	mux.HandleFunc("/todo/{id}", updateDone).Methods("PUT")

@@ -8,16 +8,16 @@ import (
 )
 
 var (
-	todoDB *sql.DB
+	TodoDB *sql.DB
 )
 
 func NewDatabase() {
 	var err error
-	todoDB, err = sql.Open("postgres", "postgresql://root:postgres@localhost:5432/go-todo?sslmode=disable")
+	TodoDB, err = sql.Open("postgres", "postgresql://root:postgres@localhost:5432/go-todo?sslmode=disable")
 	if err != nil {
 		fmt.Println("Could not connect to db", err)
 	}
-	err = todoDB.Ping()
+	err = TodoDB.Ping()
 	if err != nil {
 		fmt.Println("Could not ping db", err)
 	}

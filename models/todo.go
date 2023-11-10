@@ -1,4 +1,6 @@
-package db
+package model
+
+import "go-todo/db"
 
 // look https://go.dev/doc/database/querying for SQL query examples
 type Todo struct {
@@ -9,14 +11,14 @@ type Todo struct {
 
 func CreateTodo(todo string) error {
 	stmt := `insert into todos(todo, done) values($1, $2);`
-	_, err := todoDB.Query(stmt, todo, false)
+	_, err := db.TodoDB.Query(stmt, todo, false)
 	return err
 
 }
 
 func GetAllTodos() ([]Todo, error) {
 	stmt := `select * from todos;`
-	rows, err := todoDB.Query(stmt)
+	rows, err := db.TodoDB.Query(stmt)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +44,7 @@ func GetTodoById(id uint64) (Todo, error) {
 	stmt := `select todo, done from todos where id=$1;`
 	var todoStr string
 	var done bool
-	if err := todoDB.QueryRow(stmt, id).Scan(&todoStr, &done); err != nil {
+	if err := db.TodoDB.QueryRow(stmt, id).Scan(&todoStr, &done); err != nil {
 		return todo, err
 	}
 	todo.TodoStr = todoStr
@@ -56,12 +58,12 @@ func UpdateDone(id uint64) error {
 		return err
 	}
 	stmt := `update todos set done=$2 where id=$1;`
-	_, err = todoDB.Query(stmt, id, !todo.Done)
+	_, err = db.TodoDB.Query(stmt, id, !todo.Done)
 	return err
 }
 
 func Delete(id uint64) error {
 	stmt := `delete from todos where id=$1;`
-	_, err := todoDB.Exec(stmt, id)
+	_, err := db.TodoDB.Exec(stmt, id)
 	return err
 }
