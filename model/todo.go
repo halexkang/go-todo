@@ -1,6 +1,9 @@
 package model
 
-import "go-todo/db"
+import (
+	"fmt"
+	"go-todo/db"
+)
 
 // look https://go.dev/doc/database/querying for SQL query examples
 type Todo struct {
@@ -12,6 +15,10 @@ type Todo struct {
 func CreateTodo(todo string) error {
 	stmt := `insert into todos(todo, done) values($1, $2);`
 	_, err := db.TodoDB.Query(stmt, todo, false)
+	if err != nil {
+		fmt.Println("hey man its broken")
+	}
+	fmt.Println("success!!")
 	return err
 
 }

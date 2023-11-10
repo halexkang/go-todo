@@ -2,7 +2,7 @@ package routes
 
 import (
 	"fmt"
-	model "go-todo/models"
+	"go-todo/model"
 	"html/template"
 	"log"
 	"net/http"
@@ -14,22 +14,23 @@ import (
 func sendTodos(w http.ResponseWriter) {
 	todos, err := model.GetAllTodos()
 	if err != nil {
-		fmt.Errorf("Error:%s", &err)
+		fmt.Printf("Error:%s", err)
 		return
 	}
 	tmpl := template.Must(template.ParseFiles("templates/index.html"))
-	err = tmpl.ExecuteTemplate(w, "Todos", todos)
+	err = tmpl.ExecuteTemplate(w, "todos", todos)
 	if err != nil {
-		fmt.Errorf("Error:%s", &err)
+		fmt.Printf("Error:%s", err)
 	}
 }
 
 func createTodo(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("hit")
 	err := r.ParseForm()
 	if err != nil {
 		fmt.Printf("Error:%s", err)
 	}
-	err = model.CreateTodo(r.FormValue("todo"))
+	err = model.CreateTodo(r.FormValue("todoStr"))
 	if err != nil {
 		fmt.Printf("Error:%s", err)
 	}
