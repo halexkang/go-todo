@@ -1,4 +1,4 @@
-package model
+package todo
 
 import (
 	"fmt"
@@ -18,7 +18,6 @@ func CreateTodo(todo string) error {
 	if err != nil {
 		fmt.Println("hey man its broken")
 	}
-	fmt.Println("success!!")
 	return err
 
 }

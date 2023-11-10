@@ -1,5 +1,5 @@
 CREATE TABLE "todos" (
     "id" serial primary key,
-    "todo" varchar,
-    "done" boolean
+    "todo" varchar not null,
+    "done" boolean not null
 )

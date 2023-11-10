@@ -2,7 +2,7 @@ package routes
 
 import (
 	"fmt"
-	"go-todo/model"
+	"go-todo/todo"
 	"html/template"
 	"log"
 	"net/http"
@@ -12,7 +12,7 @@ import (
 )
 
 func sendTodos(w http.ResponseWriter) {
-	todos, err := model.GetAllTodos()
+	todos, err := todo.GetAllTodos()
 	if err != nil {
 		fmt.Printf("Error:%s", err)
 		return
@@ -25,12 +25,11 @@ func sendTodos(w http.ResponseWriter) {
 }
 
 func createTodo(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("hit")
 	err := r.ParseForm()
 	if err != nil {
 		fmt.Printf("Error:%s", err)
 	}
-	err = model.CreateTodo(r.FormValue("todoStr"))
+	err = todo.CreateTodo(r.FormValue("todoStr"))
 	if err != nil {
 		fmt.Printf("Error:%s", err)
 	}
@@ -38,7 +37,7 @@ func createTodo(w http.ResponseWriter, r *http.Request) {
 }
 
 func getTodos(w http.ResponseWriter, r *http.Request) {
-	todos, err := model.GetAllTodos()
+	todos, err := todo.GetAllTodos()
 	if err != nil {
 		fmt.Printf("Error:%s", err)
 		return
@@ -56,7 +55,7 @@ func updateDone(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println("Could not parse id", err)
 	}
-	err = model.UpdateDone(id)
+	err = todo.UpdateDone(id)
 	if err != nil {
 		fmt.Println("Could not update todo", err)
 	}
@@ -68,7 +67,7 @@ func deleteTodo(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println("C2ould not parse id", err)
 	}
-	err = model.Delete(id)
+	err = todo.Delete(id)
 	if err != nil {
 		fmt.Println("Could not delete", err)
 	}
