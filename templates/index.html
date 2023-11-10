@@ -4,22 +4,22 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://unpkg.com/htmx.org@1.9.8" integrity="sha384-rgjA7mptc2ETQqXoYC3/zJvkU7K/aP44Y+z7xQuJiVnB/422P/Ak+F/AqFR7E4Wr" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/21eda41e88.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.8"
+        integrity="sha384-rgjA7mptc2ETQqXoYC3/zJvkU7K/aP44Y+z7xQuJiVnB/422P/Ak+F/AqFR7E4Wr"
+        crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="max-w-lg mx-auto bg-gray-200">
     <div class="flex justify-center items-center">
-        <h1 class="my-8 text-4xl">Todo</h1>
+        <h1 class="my-8 text-4xl">Todo List</h1>
     </div>
-    <form hx-on::after-request="this.reset()" hx-post="/create" hx-target="#todos" hx-swap="innerHTML" class="w-full flex">
+    <form hx-on::after-request="this.reset()" hx-post="/create" hx-target="#todos" hx-swap="innerHTML"
+        class="w-full flex">
         <input class="input grow outline rounded px-2 py-1" type="text" name="todoStr" required />
-        <Button type="submit" class="ml-2" >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+        <Button type="submit" class="ml-2">
+            <i class="fa-regular fa-square-plus fa-xl"></i>
         </Button>
     </form>
     <div id="todos" class="my-4">
@@ -29,24 +29,16 @@
             <p class="grow {{if .Done }} line-through {{end}}">
                 {{.TodoStr}}
             </p>
-            <button class="ml-2" hx-post="/create" hx-target="#todos" hx-swap="innerHTML">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+            <button class="ml-2" hx-put="/todo/{{.Id}}" hx-target="#todos" hx-swap="innerHTML">
+                {{ if .Done }} <i class="fa-regular fa-square-minus text-gray-400"></i>
+                {{ else }} <i class="fa-regular fa-square-check text-green-400"></i> {{end}}
             </button>
-            <button class="ml-2" hx-post="/create" hx-target="#todos" hx-swap="innerHTML">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                </svg>
+            <button class="ml-2" hx-delete="/todo/{{.Id}}" hx-target="#todos" hx-swap="innerHTML">
+                <i class="fa-regular fa-trash-can text-red-400"></i>
             </button>
         </div>
         {{ end }}
         {{ end }}
-
     </div>
 </body>
 

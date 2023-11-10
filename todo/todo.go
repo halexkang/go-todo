@@ -23,7 +23,7 @@ func CreateTodo(todo string) error {
 }
 
 func GetAllTodos() ([]Todo, error) {
-	stmt := `select * from todos;`
+	stmt := `select id, todo, done from todos order by done, ts;`
 	rows, err := db.TodoDB.Query(stmt)
 	if err != nil {
 		return nil, err
